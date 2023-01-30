@@ -1,14 +1,8 @@
 <script>
-  export let name = 'world';
-
-  function toggleName() {
-    if (name === 'world') {
-      name = 'svelte'
-    } else {
-      name = 'world'
-    }
-  }
+  import Todos from "./components/Todos.svelte";
 </script>
+
+<Todos/>
 
 <main>
   <h1>Hello {name}!</h1>

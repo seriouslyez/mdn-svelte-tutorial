@@ -86,4 +86,4 @@ In this final article we will look at how to deploy your application and get it 
 
 You can see the complete content of this article [here](./08-next-steps/Svelte_next_steps.md) or at [MDN web docs](https://developer.mozilla.org/en-US/docs/Learn/Tools_and_testing/Client-side_JavaScript_frameworks/Svelte_deployment_next).
 
-The source code to follow this article is in the `08-next-steps` folder, you can download it with the `npx degit opensas/mdn-svelte-tutorial/08-next-steps svelte-todo` command. 
+The source code to follow this article is in the `08-next-steps` folder, you can download it with the `npx degit opensas/mdn-svelte-tutorial/08-next-steps svelte-todo` command. # cs175-todo-app
