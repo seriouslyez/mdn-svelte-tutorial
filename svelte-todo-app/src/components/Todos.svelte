@@ -10,6 +10,7 @@ accept a todos attribute -->
     import { listen_dev } from "svelte/internal";
     import FilterButton from './FilterButton.svelte';
     import Todo from './Todo.svelte';
+    import MoreActions from "./MoreActions.svelte";
 
   export let todos = []
   $: totalTodos = todos.length;
@@ -45,6 +46,12 @@ accept a todos attribute -->
     const i = todos.findIndex((t) => t.id === todo.id)
     todos[id] = { ...todos[i], ...todo}
   }
+
+  const checkAllTodos = (completed) => { 
+    todos.forEach((t, i) => todos[i].completed = completed);
+  }
+
+  const removeCompletedTodos = () => todos = todos.filter((t) => !t.completed);
 
 </script>
 
@@ -111,5 +118,11 @@ accept a todos attribute -->
     <li>Nothing to do here!</li>
     {/each}
   </ul>
+
+  <!-- We pass todos as a #Property into MoreActions so that it can be used within that component-->
+  <MoreActions {todos}
+    on:checkAll={(e) => checkAllTodos(e.detail)}
+    on:removeCompleted={removeCompletedTodos}
+  />
 
 </div>
