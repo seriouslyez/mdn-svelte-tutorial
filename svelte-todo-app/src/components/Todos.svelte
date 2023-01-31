@@ -11,6 +11,7 @@ accept a todos attribute -->
     import FilterButton from './FilterButton.svelte';
     import Todo from './Todo.svelte';
     import MoreActions from "./MoreActions.svelte";
+    import NewTodo from "./NewTodo.svelte";
 
   export let todos = []
   $: totalTodos = todos.length;
@@ -19,11 +20,9 @@ accept a todos attribute -->
     todos = todos.filter((t) => t.id !== todo.id)
   }
 
-  let newTodoName = ''
 
-  function addTodo() {
-    todos = [...todos, { id: newTodoId, name: newTodoName, completed: false }]
-    newTodoName = ''
+  function addTodo(name) {
+    todos = [...todos, { id: newTodoId, name, completed: false }];
   }
 
   let newTodoId
@@ -58,22 +57,7 @@ accept a todos attribute -->
 <div class="todoapp stack-large">
 
   <!-- NewTodo -->
-  <form on:submit|preventDefault={addTodo}>
-    <h2 class="label-wrapper">
-      <label for="todo-0" class="label__lg">
-        What needs to be done?
-      </label>
-    </h2>
-    <input 
-      bind:value={newTodoName}
-      type="text"
-      id="todo-0"
-      autocomplete="off"
-      class="input input__lg" />
-    <button type="submit" disabled="" class="btn btn__primary btn__lg">
-      Add
-    </button>
-  </form>
+  <NewTodo on:addTodo={(e) => addTodo(e.detail)} />
 
   <!-- Filter -->
   <!-- Takes current filter as #Properties from the Filter #Component-->
