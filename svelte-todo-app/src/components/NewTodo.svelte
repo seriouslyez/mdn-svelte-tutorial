@@ -1,12 +1,11 @@
 <!-- #Component that allows the creation of new todo items -->
 
-<!-- autofocus #Property is added-->
 <script>
     import { onMount } from 'svelte';
     import { createEventDispatcher } from 'svelte';
     const dispatch = createEventDispatcher();
 
-    export let autofocus = false;
+    export let autofocus = false; // autofocus #Property is added
   
     let name = '';
     let nameEl; // reference to the name input DOM node
@@ -27,11 +26,12 @@
   
   </script>
   
-  <!-- <input> has #Binding to the name variable -->
+  
   <form on:submit|preventDefault={addTodo} on:keydown={(e) => e.key === 'Escape' && onCancel()}>
     <h2 class="label-wrapper">
       <label for="todo-0" class="label__lg">What needs to be done?</label>
     </h2>
+    <!-- <input> has #Binding to the name variable -->
     <input bind:value={name} bind:this={nameEl} type="text" id="todo-0" autoComplete="off" class="input input__lg" />
     <button type="submit" disabled={!name} class="btn btn__primary btn__lg">Add</button>
   </form>

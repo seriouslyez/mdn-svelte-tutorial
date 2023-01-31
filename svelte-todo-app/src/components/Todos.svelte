@@ -1,11 +1,6 @@
 <!-- Todos.svelte -->
 <!-- #Component Todos.svelte is a component that we have created for our todo list-->
 
-
-<!-- #Properties ... with export, we are able to mark todos as a property so that we can 
-accept a todos attribute -->
-<!-- Below #Reactive values are used for listening to DOM events; in this case, totalTodos and completedTodos are both instatiated when the script is executed and afterwards, Svelte will automatically update them whenever they change based on the array itself. -->
-<!-- Below, #Control flow is used with the if else block to assign the id of a new todo-->
 <script>
     import { listen_dev } from "svelte/internal";
     import FilterButton from './FilterButton.svelte';
@@ -13,9 +8,12 @@ accept a todos attribute -->
     import MoreActions from "./MoreActions.svelte";
     import NewTodo from "./NewTodo.svelte";
 
-  export let todos = []
+  export let todos = [] //#Properties ... with export, we are able to mark todos as a property so that we can accept a todos attribute
   $: totalTodos = todos.length;
   $: completedTodos = todos.filter((todo) => todo.completed).length;
+
+  //#Reactive values are used for listening to DOM events; in this case, totalTodos and completedTodos are both instatiated when the script is executed and afterwards, Svelte will automatically update them whenever they change based on the array itself.
+
   function removeTodo(todo) {
     todos = todos.filter((t) => t.id !== todo.id)
   }
@@ -26,8 +24,8 @@ accept a todos attribute -->
   }
 
   let newTodoId
-    $: {
-      if (totalTodos === 0) {
+    $: { // #Reactive values used for listening to DOM events. This reactive value will make sure that the current value of the id is retained so that when a new todo is added, its id can be created based on the last new id
+      if (totalTodos === 0) { // #Control flow is used with the #if else block to assign the id of a new todo
         newTodoId = 1;
 
       } else {

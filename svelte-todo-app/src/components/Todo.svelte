@@ -1,7 +1,5 @@
 <!-- Another #Component; this will encapsulate each individual todo including the check box and editing logic-->
 
-<!-- #Async the tick function returns a promise that resolves as soon as any pending state changes have been applied to the DOM. If there are no pending state changes, then it resolves immediately. -->
-
 <script>
     import { createEventDispatcher } from 'svelte';
     import { tick } from 'svelte';
@@ -33,18 +31,28 @@
 
     async function onEdit() {
         editing = true;
-        await tick();
+        await tick(); // #Async the tick function returns a promise that resolves as soon as any pending state changes have been applied to the DOM. If there are no pending state changes, then it resolves immediately.
         nameEl.focus();
     }
 
     function onToggle() {
         update({ completed: !todo.completed})
     }
+
+    function selectOnFocus(node) {
+      if (node && typeof node.select === 'function') { // # ControlFlow #if block makes sure node is defined and has a select() method
+        const onFocus = (event) => node.select();
+        node.addEventListener('focus', onFocus);
+        return {
+          destroy: () => node.removeEventListener('focus', onFocus)
+        }
+      }
+    }
   </script>
   
   <!-- #Control flow is used here to indicate which buttons will display when and what functionality they will execute (by calling functions listed in the script)-->
 
-  <!-- <inputs>'s value has #Binding to the name variable. So if onCancel() is called, name is restored to its original value and editing mode is exited. When onSave() is called, update() runs with the modified name value and editing mode is exited-->
+  
   <div class="stack-small">
     {#if editing}
       <!-- markup for editing todo: label, input text, Cancel and Save Button -->
@@ -52,6 +60,7 @@
         <div class="form-group">
           <label for="todo-{todo.id}" class="todo-label">New name for '{todo.name}'</label>
           <input bind:value={name} bind:this={nameEl} type="text" id="todo-{todo.id}" autoComplete="off" class="todo-text" />
+          <!-- <inputs>'s value has #Binding to the name variable. So if onCancel() is called, name is restored to its original value and editing mode is exited. When onSave() is called, update() runs with the modified name value and editing mode is exited-->
         </div>
         <div class="btn-group">
           <button class="btn todo-cancel" on:click={onCancel} type="button">
