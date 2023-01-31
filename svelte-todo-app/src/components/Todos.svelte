@@ -57,7 +57,8 @@ accept a todos attribute -->
 <div class="todoapp stack-large">
 
   <!-- NewTodo -->
-  <NewTodo on:addTodo={(e) => addTodo(e.detail)} />
+  <!-- autofocus is passed as a #Property into the <NewTodo> #Component call-->
+  <NewTodo autofocus on:addTodo={(e) => addTodo(e.detail)} />
 
   <!-- Filter -->
   <!-- Takes current filter as #Properties from the Filter #Component-->

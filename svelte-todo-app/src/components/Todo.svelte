@@ -1,12 +1,16 @@
 <!-- Another #Component; this will encapsulate each individual todo including the check box and editing logic-->
 
+<!-- #Async the tick function returns a promise that resolves as soon as any pending state changes have been applied to the DOM. If there are no pending state changes, then it resolves immediately. -->
+
 <script>
-    import { createEventDispatcher } from 'svelte'
+    import { createEventDispatcher } from 'svelte';
+    import { tick } from 'svelte';
     const dispatch = createEventDispatcher()
     export let todo
 
     let editing = false
     let name = todo.name
+    let nameEl;
 
     function update(updatedTodo) {
         todo = { ...todo, ...updatedTodo }
@@ -27,8 +31,10 @@
         dispatch('remove', todo)
     }
 
-    function onEdit() {
-        editing = true
+    async function onEdit() {
+        editing = true;
+        await tick();
+        nameEl.focus();
     }
 
     function onToggle() {
@@ -45,7 +51,7 @@
       <form on:submit|preventDefault={onSave} class="stack-small" on:keydown={(e) => e.key === 'Escape' && onCancel()}>
         <div class="form-group">
           <label for="todo-{todo.id}" class="todo-label">New name for '{todo.name}'</label>
-          <input bind:value={name} type="text" id="todo-{todo.id}" autoComplete="off" class="todo-text" />
+          <input bind:value={name} bind:this={nameEl} type="text" id="todo-{todo.id}" autoComplete="off" class="todo-text" />
         </div>
         <div class="btn-group">
           <button class="btn todo-cancel" on:click={onCancel} type="button">
