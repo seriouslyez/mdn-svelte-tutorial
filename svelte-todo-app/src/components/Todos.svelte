@@ -61,6 +61,8 @@ accept a todos attribute -->
 
   <!-- Filter -->
   <!-- Takes current filter as #Properties from the Filter #Component-->
+
+  <!-- #Binding filter allows two way binding between the parent and child. Any changes made to the filter #Property in the FilterButton #Component will propogate back up to the parent #Component Todos -->
   <FilterButton bind:filter />
     <button class="btn toggle-btn" class:btn__primary={filter === 'all'} aria-pressed={filter === 'all'} on:click={() => filter = 'all'}>
       <span class="visually-hidden">Show</span>

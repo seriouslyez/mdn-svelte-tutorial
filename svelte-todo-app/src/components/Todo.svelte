@@ -37,6 +37,8 @@
   </script>
   
   <!-- #Control flow is used here to indicate which buttons will display when and what functionality they will execute (by calling functions listed in the script)-->
+
+  <!-- <inputs>'s value has #Binding to the name variable. So if onCancel() is called, name is restored to its original value and editing mode is exited. When onSave() is called, update() runs with the modified name value and editing mode is exited-->
   <div class="stack-small">
     {#if editing}
       <!-- markup for editing todo: label, input text, Cancel and Save Button -->
