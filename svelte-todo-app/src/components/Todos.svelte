@@ -7,31 +7,22 @@
     import Todo from './Todo.svelte';
     import MoreActions from "./MoreActions.svelte";
     import NewTodo from "./NewTodo.svelte";
+    import TodosStatus from "./TodosStatus.svelte";
+
+  let todosStatus;
 
   export let todos = [] //#Properties ... with export, we are able to mark todos as a property so that we can accept a todos attribute
-  $: totalTodos = todos.length;
-  $: completedTodos = todos.filter((todo) => todo.completed).length;
-
-  //#Reactive values are used for listening to DOM events; in this case, totalTodos and completedTodos are both instatiated when the script is executed and afterwards, Svelte will automatically update them whenever they change based on the array itself.
 
   function removeTodo(todo) {
-    todos = todos.filter((t) => t.id !== todo.id)
+    todos = todos.filter((t) => t.id !== todo.id);
+    todosStatus.focus(); // gives focus to the status heading
   }
-
 
   function addTodo(name) {
     todos = [...todos, { id: newTodoId, name, completed: false }];
   }
 
-  let newTodoId
-    $: { // #Reactive values used for listening to DOM events. This reactive value will make sure that the current value of the id is retained so that when a new todo is added, its id can be created based on the last new id
-      if (totalTodos === 0) { // #Control flow is used with the #if else block to assign the id of a new todo
-        newTodoId = 1;
-
-      } else {
-        newTodoId = Math.max(...todos.map((t) => t.id)) + 1;
-      }
-    }
+  $: newTodoId = todos.length ? Math.max(...todos.map((t) => t.id)) + 1 : 1;  // #Reactive values used for listening to DOM events. This reactive value will make sure that the current value of the id is retained so that when a new todo is added, its id can be created based on the last new id
   
   let filter = 'all'
   const filterTodos = (filter, todos) => 
@@ -81,9 +72,9 @@
   
 
   <!-- TodosStatus -->
-  <!-- #Format values: whenever array above is updated, it updates the numbers displayed
-    for how many todos are completed out of the total todos. -->
-  <h2 id="list-heading">{completedTodos} out of {totalTodos} items completed</h2>
+  <!-- todos is passed as a #Property to the TodosStatus #Component -->
+  <!-- The TodosStatus #Component has #Binding to itself, which gives reference to the instance of TodosStatus-->
+  <TodosStatus bind:this={todosStatus} {todos} />
 
   <!-- Todos -->
   

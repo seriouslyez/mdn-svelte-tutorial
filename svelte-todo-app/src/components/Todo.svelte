@@ -3,12 +3,14 @@
 <script>
     import { createEventDispatcher } from 'svelte';
     import { tick } from 'svelte';
+    import { selectOnFocus} from '../actions.js';
     const dispatch = createEventDispatcher()
     export let todo
 
     let editing = false
     let name = todo.name
     let nameEl;
+    let editButtonPressed = false;
 
     function update(updatedTodo) {
         todo = { ...todo, ...updatedTodo }
@@ -29,25 +31,18 @@
         dispatch('remove', todo)
     }
 
-    async function onEdit() {
+    function onEdit() {
+        editButtonPressed = true;
         editing = true;
-        await tick(); // #Async the tick function returns a promise that resolves as soon as any pending state changes have been applied to the DOM. If there are no pending state changes, then it resolves immediately.
-        nameEl.focus();
+        
     }
+
+    const focusEditButton = (node) => editButtonPressed && node.focus();
 
     function onToggle() {
         update({ completed: !todo.completed})
     }
 
-    function selectOnFocus(node) {
-      if (node && typeof node.select === 'function') { // # ControlFlow #if block makes sure node is defined and has a select() method
-        const onFocus = (event) => node.select();
-        node.addEventListener('focus', onFocus);
-        return {
-          destroy: () => node.removeEventListener('focus', onFocus)
-        }
-      }
-    }
   </script>
   
   <!-- #Control flow is used here to indicate which buttons will display when and what functionality they will execute (by calling functions listed in the script)-->
@@ -59,7 +54,7 @@
       <form on:submit|preventDefault={onSave} class="stack-small" on:keydown={(e) => e.key === 'Escape' && onCancel()}>
         <div class="form-group">
           <label for="todo-{todo.id}" class="todo-label">New name for '{todo.name}'</label>
-          <input bind:value={name} bind:this={nameEl} type="text" id="todo-{todo.id}" autoComplete="off" class="todo-text" />
+          <input bind:value={name} bind:this={nameEl} use:selectOnFocus type="text" id="todo-{todo.id}" autoComplete="off" class="todo-text" />
           <!-- <inputs>'s value has #Binding to the name variable. So if onCancel() is called, name is restored to its original value and editing mode is exited. When onSave() is called, update() runs with the modified name value and editing mode is exited-->
         </div>
         <div class="btn-group">
@@ -80,7 +75,7 @@
         <label for="todo-{todo.id}" class="todo-label">{todo.name}</label>
       </div>
       <div class="btn-group">
-        <button type="button" class="btn" on:click={onEdit}>
+        <button type="button" class="btn" on:click={onEdit} use:focusEditButton>
           Edit<span class="visually-hidden"> {todo.name}</span>
         </button>
         <button type="button" class="btn btn__danger" on:click={onRemove}>

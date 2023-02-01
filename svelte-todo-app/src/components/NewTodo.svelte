@@ -3,6 +3,7 @@
 <script>
     import { onMount } from 'svelte';
     import { createEventDispatcher } from 'svelte';
+    import { selectOnFocus } from '../actions';
     const dispatch = createEventDispatcher();
 
     export let autofocus = false; // autofocus #Property is added
@@ -32,7 +33,7 @@
       <label for="todo-0" class="label__lg">What needs to be done?</label>
     </h2>
     <!-- <input> has #Binding to the name variable -->
-    <input bind:value={name} bind:this={nameEl} type="text" id="todo-0" autoComplete="off" class="input input__lg" />
+    <input bind:value={name} bind:this={nameEl} use:selectOnFocus type="text" id="todo-0" autoComplete="off" class="input input__lg" />
     <button type="submit" disabled={!name} class="btn btn__primary btn__lg">Add</button>
   </form>
   
